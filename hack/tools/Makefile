@@ -12,10 +12,6 @@ export GO111MODULE := on
 # Directories.
 BIN_DIR := bin
 
-# Versions.
-KUBEBUILDER_VERSION=2.2.0
-KUBECTL_VERSION=1.15.3
-
 HOST_OS=$(shell go env GOOS)
 HOST_ARCH=$(shell go env GOARCH)
 
