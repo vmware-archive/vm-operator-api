@@ -44,4 +44,4 @@ Current list of project maintainers [here](MAINTAINERS.md)
 
 ## License
 
-Antrea is licensed under the [Apache License, version 2.0](LICENSE)
+VM Operator API is licensed under the [Apache License, version 2.0](LICENSE)
