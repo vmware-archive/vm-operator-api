@@ -1,0 +1,124 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.8
+  creationTimestamp: null
+  name: virtualmachineimages.vmoperator.vmware.com
+spec:
+  additionalPrinterColumns:
+  - JSONPath: .spec.productInfo.version
+    name: Version
+    type: string
+  - JSONPath: .spec.osInfo.type
+    name: OsType
+    type: string
+  group: vmoperator.vmware.com
+  names:
+    kind: VirtualMachineImage
+    listKind: VirtualMachineImageList
+    plural: virtualmachineimages
+    shortNames:
+    - vmimage
+    singular: virtualmachineimage
+  scope: Cluster
+  subresources:
+    status: {}
+  validation:
+    openAPIV3Schema:
+      description: VirtualMachineImage is the Schema for the virtualmachineimages
+        API A VirtualMachineImage represents a VirtualMachine image (e.g. VM template)
+        that can be used as the base image for creating a VirtualMachine instance.  The
+        VirtualMachineImage is a required field of the VirtualMachine spec.  Currently,
+        VirtualMachineImages are immutable to end users.  They are created and managed
+        by a VirtualMachineImage controller whose role is to discover available images
+        in the backing infrastructure provider that should be surfaced as consumable
+        VirtualMachineImage resources.
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: VirtualMachineImageSpec defines the desired state of VirtualMachineImage
+          properties:
+            imageSourceType:
+              description: ImageSourceType describes the type of content source of
+                the VirtualMachineImage.  The only Content Source supported currently
+                is the vSphere Content Library.
+              type: string
+            osInfo:
+              description: OSInfo describes the attributes of the VirtualMachineImage
+                relating to the Operating System contained in the image.
+              properties:
+                type:
+                  description: Type typically describes the type of the guest operating
+                    system.
+                  type: string
+                version:
+                  description: Version typically describes the version of the guest
+                    operating system.
+                  type: string
+              type: object
+            productInfo:
+              description: ProductInfo describes the attributes of the VirtualMachineImage
+                relating to the product contained in the image.
+              properties:
+                fullVersion:
+                  description: FullVersion typically describes a long-form version
+                    of the image.
+                  type: string
+                product:
+                  description: Product typically describes the type of product contained
+                    in the image.
+                  type: string
+                vendor:
+                  description: Vendor typically describes the name of the vendor that
+                    is producing the image.
+                  type: string
+                version:
+                  description: Version typically describes a short-form version of
+                    the image.
+                  type: string
+              type: object
+            type:
+              description: Type describes the type of the VirtualMachineImage. Currently,
+                the only supported image is "OVF"
+              type: string
+          required:
+          - type
+          type: object
+        status:
+          description: VirtualMachineImageStatus defines the observed state of VirtualMachineImage
+          properties:
+            internalId:
+              type: string
+            powerState:
+              type: string
+            uuid:
+              type: string
+          required:
+          - internalId
+          type: object
+      type: object
+  version: v1alpha1
+  versions:
+  - name: v1alpha1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
