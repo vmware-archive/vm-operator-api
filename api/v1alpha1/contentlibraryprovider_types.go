@@ -9,9 +9,10 @@ import (
 
 // ContentLibraryProviderSpec defines the desired state of ContentLibraryProvider
 type ContentLibraryProviderSpec struct {
-	// Name describes the name of a content library. This is not necessarily the same as vCenter
-	// name of the content library.
-	Name string `json:"name,omitempty"`
+	// vSphereName describes the vSphere name of a content library provider. This is the name
+	// of the content library in the vSphere inventory view.
+	// +optional
+	VsphereName string `json:"vSphereName,omitempty"`
 	// UUID describes the UUID of a vSphere content library. It is the unique identifier for a
 	// vSphere content library.
 	UUID string `json:"uuid,omitempty"`
@@ -46,4 +47,3 @@ type ContentLibraryProviderList struct {
 func init() {
 	SchemeBuilder.Register(&ContentLibraryProvider{}, &ContentLibraryProviderList{})
 }
-
