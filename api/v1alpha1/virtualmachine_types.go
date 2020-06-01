@@ -64,7 +64,7 @@ const (
 	VirtualMachineMetadataExtraConfigTransport VirtualMachineMetadataTransport = "ExtraConfig"
 
 	// VirtualMachineMetadataOvfEnvTransport will set the VirtualMachineMetadata ConfigMap data as
-	// vApp properties on the VM, which will be exposed as OvfEnv to the VM Guest. Only properties
+	// vApp properties on the VM, which will be exposed as OvfEnv to the Guest VM. Only properties
 	// marked userConfigurable and already present in either OVF Properties of a VirtualMachineImage
 	// or as vApp properties on an existing VM or VMTX will be set, all others will be ignored.
 	VirtualMachineMetadataOvfEnvTransport VirtualMachineMetadataTransport = "OvfEnv"
