@@ -132,6 +132,12 @@ type TCPSocketAction struct {
 	Host string `json:"host,omitempty"`
 }
 
+// VirtualMachineDisk defines the properties of a disk.
+type VirtualMachineDisk struct {
+	// Size specifies the disk size in GB
+	Size int `json:"size"`
+}
+
 // VirtualMachineSpec defines the desired state of a VirtualMachine
 type VirtualMachineSpec struct {
 	// ImageName describes the name of a VirtualMachineImage that is to be used as the base Operating System image of
@@ -183,6 +189,10 @@ type VirtualMachineSpec struct {
 	// responding to the probe.
 	// +optional
 	ReadinessProbe *Probe `json:"readinessProbe,omitempty"`
+
+	// SystemDisk specifies the VirtualMachineDisk which is the SystemDisk of a VirtualMachine.
+	// +optional
+	SystemDisk *VirtualMachineDisk `json:"systemDisk,omitempty"`
 }
 
 // VirtualMachineVolumeStatus defines the observed state of a VirtualMachineVolume instance.

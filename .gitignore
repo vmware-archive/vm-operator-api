@@ -22,4 +22,7 @@ vendor
 .idea
 *.swp
 *.swo
+
+# generated config files
+config
 *~
