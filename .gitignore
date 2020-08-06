@@ -23,3 +23,6 @@ vendor
 *.swp
 *.swo
 *~
+
+# generated config files
+config/
