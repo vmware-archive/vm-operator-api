@@ -105,6 +105,21 @@ type VirtualMachineVolume struct {
 	// PersistentVolumeClaim represents a reference to a PersistentVolumeClaim in the same namespace. The PersistentVolumeClaim
 	// must match a persistent volume provisioned (either statically or dynamically) by the cluster's CSI provider.
 	PersistentVolumeClaim *corev1.PersistentVolumeClaimVolumeSource `json:"persistentVolumeClaim,omitempty"`
+
+	// VSphereVolume represents a reference to a vSphereVolumeSpec in the same namespace. Only one of PersistentVolumeClaim or
+	// VSphereVolume can be specified. This is enforced via a webhook
+	VSphereVolume *VsphereVolumeSource `json:"vSphereVolume,omitempty"`
+}
+
+// VsphereVolumeSource describes a volume source that represent static disks that belong to a VirtualMachine.
+type VsphereVolumeSource struct {
+	// A description of the virtual volume's resources and capacity
+	// +optional
+	Capacity        corev1.ResourceList `json:"capacity,omitempty"`
+
+	// Device key of vSphere disk.  Empty deviceKey means it should be created in vSphere.
+	// +optional
+	DeviceKey          *string `json:"deviceKey,omitempty"`
 }
 
 // Probe describes a health check to be performed against a VirtualMachine to determine whether it is
