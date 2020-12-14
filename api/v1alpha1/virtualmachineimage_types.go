@@ -64,9 +64,18 @@ type VirtualMachineImageSpec struct {
 
 // VirtualMachineImageStatus defines the observed state of VirtualMachineImage
 type VirtualMachineImageStatus struct {
-	Uuid       string `json:"uuid,omitempty"`
-	InternalId string `json:"internalId"`
-	PowerState string `json:"powerState,omitempty"`
+	// Deprecated
+	Uuid          string `json:"uuid,omitempty"`
+
+	// Deprecated
+	InternalId    string `json:"internalId"`
+
+	// Deprecated
+	PowerState    string `json:"powerState,omitempty"`
+
+	// GuestOSCustomizable indicates whether the VirtualMachineImage's osType is supported for
+	// customisation on the cluster
+	GuestOSCustomizable *bool  `json:"guestOsCustomizable,omitempty"`
 }
 
 // +genclient
@@ -77,13 +86,13 @@ type VirtualMachineImageStatus struct {
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
 // +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
+// +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
+// +kubebuilder:printcolumn:name="GuestOSCustomizable",type="boolean",priority=1,JSONPath=".status.guestOsCustomizable"
 
 // VirtualMachineImage is the Schema for the virtualmachineimages API
 // A VirtualMachineImage represents a VirtualMachine image (e.g. VM template) that can be used as the base image
 // for creating a VirtualMachine instance.  The VirtualMachineImage is a required field of the VirtualMachine
-// spec.  Currently, VirtualMachineImages are immutable to end users.  They are created and managed by a
-// VirtualMachineImage controller whose role is to discover available images in the backing infrastructure provider
-// that should be surfaced as consumable VirtualMachineImage resources.
+// spec.  Currently, VirtualMachineImages are immutable to end users.
 type VirtualMachineImage struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`

@@ -47,6 +47,18 @@ type VirtualMachinePort struct {
 	Protocol corev1.Protocol `json:"protocol"`
 }
 
+// NetworkInterfaceProviderReference contains info to locate a network interface provider object.
+type NetworkInterfaceProviderReference struct {
+	// APIGroup is the group for the resource being referenced.
+	APIGroup string `json:"apiGroup"`
+	// Kind is the type of resource being referenced
+	Kind string `json:"kind"`
+	// Name is the name of resource being referenced
+	Name string `json:"name"`
+	// API version of the referent.
+	APIVersion string `json:"apiVersion,omitempty"`
+}
+
 // VirtualMachineNetworkInterface defines the properties of a network interface to attach to a VirtualMachine
 // instance.  A VirtualMachineNetworkInterface describes network interface configuration that is used by the
 // VirtualMachine controller when integrating the VirtualMachine into a VirtualNetwork.  Currently, only NSX-T
@@ -55,14 +67,24 @@ type VirtualMachinePort struct {
 type VirtualMachineNetworkInterface struct {
 	// NetworkType describes the type of VirtualNetwork that is referenced by the NetworkName.  Currently, the only
 	// supported NetworkTypes are "nsx-t" and "vsphere-distributed".
+	// +optional
 	NetworkType string `json:"networkType,omitempty"`
 
-	// NetworkName describes the name of an existing virtual network that this interface should be added to.  For
-	// NSX-T networks, this is the name of a pre-existing NSX-T VirtualNetwork.
-	NetworkName string `json:"networkName"`
+	// NetworkName describes the name of an existing virtual network that this interface should be added to.
+	// For "nsx-t" NetworkType, this is the name of a pre-existing NSX-T VirtualNetwork. If unspecified,
+	// the default network for the namespace will be used. For "vsphere-distributed" NetworkType, the
+	// NetworkName must be specified.
+	// +optional
+	NetworkName string `json:"networkName,omitempty"`
+
+	// ProviderRef is reference to a network interface provider object that specifies the network interface configuration.
+	// If unset, default configuration is assumed.
+	// +optional
+	ProviderRef *NetworkInterfaceProviderReference `json:"providerRef,omitempty"`
 
 	// EthernetCardType describes an optional ethernet card that should be used by the VirtualNetworkInterface (vNIC)
 	// associated with this network integration.  The default is "vmxnet3".
+	// +optional
 	EthernetCardType string `json:"ethernetCardType,omitempty"`
 }
 
@@ -149,7 +171,15 @@ type Probe struct {
 	// TimeoutSeconds specifies a number of seconds after which the probe times out.
 	// Defaults to 10 seconds. Minimum value is 1.
 	// +optional
+	// +kubebuilder:validation:Minimum:=1
+	// +kubebuilder:validation:Maximum:=60
 	TimeoutSeconds int32 `json:"timeoutSeconds,omitempty"`
+
+	// PeriodSeconds specifics how often (in seconds) to perform the probe.
+	// Defaults to 10 seconds. Minimum value is 1.
+	// +optional
+	// +kubebuilder:validation:Minimum:=1
+	PeriodSeconds int32 `json:"periodSeconds,omitempty"`
 }
 
 // TCPSocketAction describes an action based on opening a socket.
@@ -171,7 +201,7 @@ type VirtualMachineSpec struct {
 	// attributes that may help users to identify the desired image to use.
 	ImageName string `json:"imageName"`
 
-	// ClassName describes the name of a VirtualMachineClass that is to be used as the overlayed resource configuration
+	// ClassName describes the name of a VirtualMachineClass that is to be used as the overlaid resource configuration
 	// of VirtualMachine.  A VirtualMachineClass is used to further customize the attributes of the VirtualMachine
 	// instance.  See VirtualMachineClass for more description.
 	ClassName string `json:"className"`
@@ -225,9 +255,13 @@ type VirtualMachineAdvancedOptions struct {
 	// DefaultProvisioningOptions specifies the provisioning type to be used by default for VirtualMachine volumes exclusively
 	// owned by this VirtualMachine. This does not apply to PersistentVolumeClaim volumes that are created and managed externally.
 	DefaultVolumeProvisioningOptions *VirtualMachineVolumeProvisioningOptions `json:"defaultVolumeProvisioningOptions,omitempty"`
+
+	// ChangeBlockTracking specifies the enablement of incremental backup support for this VirtualMachine, which can be utilized
+	// by external backup systems such as VMware Data Recovery.
+	ChangeBlockTracking *bool `json:"changeBlockTracking,omitempty"`
 }
 
-// VirtualMachineVolumeProvisioningOptions specifies the provisioning options for the a VirtualMachineVolume.
+// VirtualMachineVolumeProvisioningOptions specifies the provisioning options for a VirtualMachineVolume.
 type VirtualMachineVolumeProvisioningOptions struct {
 	// ThinProvisioned specifies whether to use thin provisioning for the VirtualMachineVolume.
 	// This means a sparse (allocate on demand) format with additional space optimizations.
@@ -243,7 +277,7 @@ type VirtualMachineVolumeProvisioningOptions struct {
 
 // VirtualMachineVolumeStatus defines the observed state of a VirtualMachineVolume instance.
 type VirtualMachineVolumeStatus struct {
-	// Name is the the name of the volume in a VirtualMachine.
+	// Name is the name of the volume in a VirtualMachine.
 	Name string `json:"name"`
 
 	// Attached represents whether a volume has been successfully attached to the VirtualMachine or not.
@@ -259,54 +293,57 @@ type VirtualMachineVolumeStatus struct {
 // VirtualMachineStatus defines the observed state of a VirtualMachine instance.
 type VirtualMachineStatus struct {
 	// Host describes the hostname or IP address of the infrastructure host that the VirtualMachine is executing on.
-	Host string `json:"host"`
+	// +optional
+	Host string `json:"host,omitempty"`
 
 	// PowerState describes the current power state of the VirtualMachine.
-	PowerState VirtualMachinePowerState `json:"powerState"`
+	// +optional
+	PowerState VirtualMachinePowerState `json:"powerState,omitempty"`
 
 	// Phase describes the current phase information of the VirtualMachine.
-	Phase VMStatusPhase `json:"phase"`
+	// +optional
+	Phase VMStatusPhase `json:"phase,omitempty"`
 
 	// Conditions describes the current condition information of the VirtualMachine.
-	Conditions []VirtualMachineCondition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
+	// +optional
+	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
 
 	// VmIp describes the IP address of the VirtualMachine.  Currently, a VirtualMachine only supports a single
 	// network interface and interface address.
-	VmIp string `json:"vmIp"`
+	// +optional
+	VmIp string `json:"vmIp,omitempty"`
 
 	// UniqueID describes a unique identifier that is provided by the underlying infrastructure provider, such as
 	// vSphere.
-	UniqueID string `json:"uniqueID"`
+	// +optional
+	UniqueID string `json:"uniqueID,omitempty"`
 
 	// BiosUUID describes a unique identifier provided by the underlying infrastructure provider that is exposed to the
 	// Guest OS BIOS as a unique hardware identifier.
-	BiosUUID string `json:"biosUUID"`
+	// +optional
+	BiosUUID string `json:"biosUUID,omitempty"`
+
+	// InstanceUUID describes the unique instance UUID provided by the underlying infrastructure provider, such as vSphere.
+	// +optional
+	InstanceUUID string `json:"instanceUUID,omitempty"`
 
 	// Volumes describes a list of current status information for each Volume that is desired to be attached to the
 	// VirtualMachine.
+	// +optional
 	Volumes []VirtualMachineVolumeStatus `json:"volumes,omitempty"`
+
+	// ChangeBlockTracking describes the CBT enablement status on the VirtualMachine.
+	// +optional
+	ChangeBlockTracking *bool `json:"changeBlockTracking,omitempty"`
 }
 
-// VirtualMachineCondition contains condition information for a VirtualMachine.
-type VirtualMachineCondition struct {
-	// Type of the condition.
-	Type VirtualMachineConditionType `json:"type"`
-
-	// Status of the condition, one of ('True', 'False', 'Unknown').
-	Status metav1.ConditionStatus `json:"status"`
-
-	// The last time the condition transitioned from one status to another.
-	LastTransitionTime metav1.Time `json:"lastTransitionTime,omitempty"`
-
-	// Unique, one-word, CamelCase reason for the condition's last transition.
-	Reason string `json:"reason,omitempty"`
-
-	// Human-readable message indicating details about last transition.
-	Message string `json:"message,omitempty"`
+func (vm *VirtualMachine) GetConditions() Conditions {
+	return vm.Status.Conditions
 }
 
-// VirtualMachineConditionType indicates the type of VirtualMachineCondition.
-type VirtualMachineConditionType string
+func (vm *VirtualMachine) SetConditions(conditions Conditions) {
+	vm.Status.Conditions = conditions
+}
 
 // +genclient
 // +kubebuilder:object:root=true

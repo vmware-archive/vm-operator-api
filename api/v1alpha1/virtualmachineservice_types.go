@@ -85,7 +85,22 @@ type VirtualMachineServiceSpec struct {
 	// VirtualMachineService with the set of VirtualMachines that should back this VirtualMachineService.
 	Selector map[string]string `json:"selector"`
 
-	// Just support cluster IP for now
+	// Only applies to Service Type: LoadBalancer
+	// LoadBalancer will get created with the IP specified in this field.
+	// This feature depends on whether the underlying loadbalancer provider supports specifying
+	// the loadBalancerIP when a load balancer is created.
+	// This field will be ignored if the provider does not support the feature.
+	// +optional
+	LoadBalancerIP string `json:"loadBalancerIP,omitempty"`
+
+	// LoadBalancerSourceRanges is an array of IP addresses in the format of
+	// CIDRs, for example: 103.21.244.0/22 and 10.0.0.0/24.
+	// If specified and supported by the platform, this will restrict
+	// ingress traffic to the specified client IPs. This field will be ignored if the
+	// loadbalancer provider does not support the feature.
+	// +optional
+	LoadBalancerSourceRanges []string `json:"loadBalancerSourceRanges,omitempty"`
+
 	ClusterIP    string `json:"clusterIp,omitempty"`
 	ExternalName string `json:"externalName,omitempty"`
 }
