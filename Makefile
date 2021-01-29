@@ -17,7 +17,7 @@ export PATH := $(abspath $(BIN_DIR)):$(abspath $(TOOLS_BIN_DIR)):$(PATH)
 
 # Tooling binaries
 CONTROLLER_GEN     := $(TOOLS_BIN_DIR)/controller-gen
-CLIENT_GEN	       := $(TOOLS_BIN_DIR)/client-gen
+CLIENT_GEN         := $(TOOLS_BIN_DIR)/client-gen
 INFORMER_GEN       := $(TOOLS_BIN_DIR)/informer-gen
 LISTER_GEN         := $(TOOLS_BIN_DIR)/lister-gen
 GOLANGCI_LINT      := $(TOOLS_BIN_DIR)/golangci-lint
@@ -80,7 +80,10 @@ generate-manifests: $(CONTROLLER_GEN) ## Generate manifests e.g. CRD, RBAC etc.
 	$(CONTROLLER_GEN) \
 		paths=./api/... \
 		crd:trivialVersions=true \
-		output:crd:dir=$(CRD_ROOT)
+		crd:crdVersions=v1 \
+		crd:preserveUnknownFields=false \
+		output:crd:dir=$(CRD_ROOT) \
+		output:none
 
 .PHONY: generate-client
 generate-client: tools ## Generate api client
