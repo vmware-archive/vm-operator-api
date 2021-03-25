@@ -1,12 +1,10 @@
 // Copyright (c) 2020 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // ContentLibraryProviderSpec defines the desired state of ContentLibraryProvider
@@ -22,6 +20,7 @@ type ContentLibraryProviderStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:storageversion
 // +kubebuilder:resource:scope=Cluster
 // +kubebuilder:printcolumn:name="Content Library UUID",type="string",JSONPath=".spec.uuid",description="UUID of the vSphere content library"
 
@@ -45,24 +44,4 @@ type ContentLibraryProviderList struct {
 
 func init() {
 	RegisterTypeWithScheme(&ContentLibraryProvider{}, &ContentLibraryProviderList{})
-}
-
-func (src *ContentLibraryProvider) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.ContentLibraryProvider)
-	return Convert_v1alpha1_ContentLibraryProvider_To_v1alpha2_ContentLibraryProvider(src, dst, nil)
-}
-
-func (dst *ContentLibraryProvider) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.ContentLibraryProvider)
-	return Convert_v1alpha2_ContentLibraryProvider_To_v1alpha1_ContentLibraryProvider(src, dst, nil)
-}
-
-func (src *ContentLibraryProviderList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.ContentLibraryProviderList)
-	return Convert_v1alpha1_ContentLibraryProviderList_To_v1alpha2_ContentLibraryProviderList(src, dst, nil)
-}
-
-func (dst *ContentLibraryProviderList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.ContentLibraryProviderList)
-	return Convert_v1alpha2_ContentLibraryProviderList_To_v1alpha1_ContentLibraryProviderList(src, dst, nil)
 }

@@ -17,6 +17,7 @@ HOST_ARCH=$(shell go env GOARCH)
 
 # Binaries.
 CONTROLLER_GEN  := $(BIN_DIR)/controller-gen
+CONVERSION_GEN  := $(BIN_DIR)/conversion-gen
 GOLANGCI_LINT   := $(BIN_DIR)/golangci-lint
 
 ## --------------------------------------
@@ -35,11 +36,15 @@ controller-gen: $(CONTROLLER_GEN) ## Install controller-gen
 $(CONTROLLER_GEN): go.mod
 	go build -tags=tools -o $@ sigs.k8s.io/controller-tools/cmd/controller-gen
 
+.PHONY: $(CONVERSION_GEN)
+conversion-gen: $(CONVERSION_GEN) ## Install conversion-gen
+$(CONVERSION_GEN): go.mod
+	go build -tags=tools -o $@ k8s.io/code-generator/cmd/conversion-gen
+
 .PHONY: $(GOLANGCI_LINT)
 golangci-lint: $(GOLANGCI_LINT) ## Install golangci-lint
 $(GOLANGCI_LINT):
-	[ -f $(BIN_DIR)/golangci-lint ] || curl -sfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh| sh -s -- -b $(BIN_DIR) v1.21.0
-#	go build -tags=tools -o $@ github.com/golangci/golangci-lint/cmd/golangci-lint
+	go build -tags=tools -o $@ github.com/golangci/golangci-lint/cmd/golangci-lint
 
 ## --------------------------------------
 ##@ Generate

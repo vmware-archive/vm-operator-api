@@ -1,12 +1,10 @@
 // Copyright (c) 2019 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // VirtualMachineServiceType string describes ingress methods for a service
@@ -134,6 +132,7 @@ type VirtualMachineServiceStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:shortName=vmservice
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Type",type="string",JSONPath=".spec.type"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
@@ -165,24 +164,4 @@ type VirtualMachineServiceList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachineService{}, &VirtualMachineServiceList{})
-}
-
-func (src *VirtualMachineService) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineService)
-	return Convert_v1alpha1_VirtualMachineService_To_v1alpha2_VirtualMachineService(src, dst, nil)
-}
-
-func (dst *VirtualMachineService) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineService)
-	return Convert_v1alpha2_VirtualMachineService_To_v1alpha1_VirtualMachineService(src, dst, nil)
-}
-
-func (src *VirtualMachineServiceList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineServiceList)
-	return Convert_v1alpha1_VirtualMachineServiceList_To_v1alpha2_VirtualMachineServiceList(src, dst, nil)
-}
-
-func (dst *VirtualMachineServiceList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineServiceList)
-	return Convert_v1alpha2_VirtualMachineServiceList_To_v1alpha1_VirtualMachineServiceList(src, dst, nil)
 }

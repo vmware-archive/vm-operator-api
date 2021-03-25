@@ -1,12 +1,10 @@
 // Copyright (c) 2020 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // ContentSourceReference contains info to locate a Kind ContentSource object.
@@ -20,6 +18,7 @@ type ContentSourceReference struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:storageversion
 // +kubebuilder:resource:scope=Namespaced
 // +kubebuilder:printcolumn:name="ContentSource",type="string",JSONPath=".contentSourceRef.name"
 
@@ -43,24 +42,4 @@ type ContentSourceBindingList struct {
 
 func init() {
 	RegisterTypeWithScheme(&ContentSourceBinding{}, &ContentSourceBindingList{})
-}
-
-func (src *ContentSourceBinding) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.ContentSourceBinding)
-	return Convert_v1alpha1_ContentSourceBinding_To_v1alpha2_ContentSourceBinding(src, dst, nil)
-}
-
-func (dst *ContentSourceBinding) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.ContentSourceBinding)
-	return Convert_v1alpha2_ContentSourceBinding_To_v1alpha1_ContentSourceBinding(src, dst, nil)
-}
-
-func (src *ContentSourceBindingList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.ContentSourceBindingList)
-	return Convert_v1alpha1_ContentSourceBindingList_To_v1alpha2_ContentSourceBindingList(src, dst, nil)
-}
-
-func (dst *ContentSourceBindingList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.ContentSourceBindingList)
-	return Convert_v1alpha2_ContentSourceBindingList_To_v1alpha1_ContentSourceBindingList(src, dst, nil)
 }

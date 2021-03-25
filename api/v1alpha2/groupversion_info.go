@@ -1,7 +1,7 @@
 // Copyright (c) 2020 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -14,15 +14,13 @@ const GroupName = "vmoperator.vmware.com"
 
 var (
 	// SchemeGroupVersion is group version used to register these objects
-	SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1alpha1"}
+	SchemeGroupVersion = schema.GroupVersion{Group: GroupName, Version: "v1alpha2"}
 
 	// SchemeBuilder is used to add go types to the GroupVersionKind scheme
 	SchemeBuilder = &runtime.SchemeBuilder{}
 
 	// AddToScheme adds the types in this group-version to the given scheme.
 	AddToScheme = SchemeBuilder.AddToScheme
-
-	localSchemeBuilder = SchemeBuilder
 )
 
 // Resource takes an unqualified resource and returns a Group qualified GroupResource

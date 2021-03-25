@@ -1,14 +1,12 @@
 // Copyright (c) 2020 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/util/intstr"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // See govmomi.vim25.types.VirtualMachinePowerState
@@ -340,6 +338,7 @@ func (vm *VirtualMachine) SetConditions(conditions Conditions) {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:scope=Namespaced,shortName=vm
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="PowerState",type="string",JSONPath=".status.powerState"
 // +kubebuilder:printcolumn:name="Class",type="string",priority=1,JSONPath=".spec.className"
@@ -373,24 +372,4 @@ type VirtualMachineList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachine{}, &VirtualMachineList{})
-}
-
-func (src *VirtualMachine) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachine)
-	return Convert_v1alpha1_VirtualMachine_To_v1alpha2_VirtualMachine(src, dst, nil)
-}
-
-func (dst *VirtualMachine) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachine)
-	return Convert_v1alpha2_VirtualMachine_To_v1alpha1_VirtualMachine(src, dst, nil)
-}
-
-func (src *VirtualMachineList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineList)
-	return Convert_v1alpha1_VirtualMachineList_To_v1alpha2_VirtualMachineList(src, dst, nil)
-}
-
-func (dst *VirtualMachineList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineList)
-	return Convert_v1alpha2_VirtualMachineList_To_v1alpha1_VirtualMachineList(src, dst, nil)
 }

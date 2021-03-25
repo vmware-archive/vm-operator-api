@@ -8,7 +8,7 @@ replace github.com/vmware-tanzu/vm-operator-api => ../../../vm-operator-api
 
 require (
 	github.com/vmware-tanzu/vm-operator-api v0.0.0
-	k8s.io/apimachinery v0.17.4
-	k8s.io/client-go v0.17.2
-	sigs.k8s.io/controller-runtime v0.5.2
+	k8s.io/apimachinery v0.20.2
+	k8s.io/client-go v0.20.2
+	sigs.k8s.io/controller-runtime v0.8.3
 )

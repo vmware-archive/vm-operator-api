@@ -1,13 +1,11 @@
 // Copyright (c) 2019 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	"k8s.io/apimachinery/pkg/api/resource"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // VGPUDevice contains the configuration corresponding to a vGPU device.
@@ -77,6 +75,7 @@ type VirtualMachineClassStatus struct {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:scope=Cluster,shortName=vmclass
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="CPU",type="string",JSONPath=".spec.hardware.cpus"
 // +kubebuilder:printcolumn:name="Memory",type="string",JSONPath=".spec.hardware.memory"
@@ -106,24 +105,4 @@ type VirtualMachineClassList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachineClass{}, &VirtualMachineClassList{})
-}
-
-func (src *VirtualMachineClass) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineClass)
-	return Convert_v1alpha1_VirtualMachineClass_To_v1alpha2_VirtualMachineClass(src, dst, nil)
-}
-
-func (dst *VirtualMachineClass) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineClass)
-	return Convert_v1alpha2_VirtualMachineClass_To_v1alpha1_VirtualMachineClass(src, dst, nil)
-}
-
-func (src *VirtualMachineClassList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineClassList)
-	return Convert_v1alpha1_VirtualMachineClassList_To_v1alpha2_VirtualMachineClassList(src, dst, nil)
-}
-
-func (dst *VirtualMachineClassList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineClassList)
-	return Convert_v1alpha2_VirtualMachineClassList_To_v1alpha1_VirtualMachineClassList(src, dst, nil)
 }

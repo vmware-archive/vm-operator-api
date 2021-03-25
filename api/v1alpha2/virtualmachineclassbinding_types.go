@@ -1,12 +1,10 @@
 // Copyright (c) 2020 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // ClassReference contains info to locate a Kind VirtualMachineClass object
@@ -20,6 +18,7 @@ type ClassReference struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:storageversion
 // +kubebuilder:resource:scope=Namespaced,shortName=vmclassbinding
 // +kubebuilder:printcolumn:name="VirtualMachineClass",type="string",JSONPath=".classRef.name"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
@@ -45,24 +44,4 @@ type VirtualMachineClassBindingList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachineClassBinding{}, &VirtualMachineClassBindingList{})
-}
-
-func (src *VirtualMachineClassBinding) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineClassBinding)
-	return Convert_v1alpha1_VirtualMachineClassBinding_To_v1alpha2_VirtualMachineClassBinding(src, dst, nil)
-}
-
-func (dst *VirtualMachineClassBinding) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineClassBinding)
-	return Convert_v1alpha2_VirtualMachineClassBinding_To_v1alpha1_VirtualMachineClassBinding(src, dst, nil)
-}
-
-func (src *VirtualMachineClassBindingList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineClassBindingList)
-	return Convert_v1alpha1_VirtualMachineClassBindingList_To_v1alpha2_VirtualMachineClassBindingList(src, dst, nil)
-}
-
-func (dst *VirtualMachineClassBindingList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineClassBindingList)
-	return Convert_v1alpha2_VirtualMachineClassBindingList_To_v1alpha1_VirtualMachineClassBindingList(src, dst, nil)
 }

@@ -1,12 +1,10 @@
 // Copyright (c) 2019 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // ResourcePoolSpec defines a Logical Grouping of workloads that share resource policies.
@@ -56,6 +54,7 @@ type ClusterModuleStatus struct {
 }
 
 // +kubebuilder:object:root=true
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 
 // VirtualMachineSetResourcePolicy is the Schema for the virtualmachinesetresourcepolicies API.
@@ -82,24 +81,4 @@ type VirtualMachineSetResourcePolicyList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachineSetResourcePolicy{}, &VirtualMachineSetResourcePolicyList{})
-}
-
-func (src *VirtualMachineSetResourcePolicy) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineSetResourcePolicy)
-	return Convert_v1alpha1_VirtualMachineSetResourcePolicy_To_v1alpha2_VirtualMachineSetResourcePolicy(src, dst, nil)
-}
-
-func (dst *VirtualMachineSetResourcePolicy) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineSetResourcePolicy)
-	return Convert_v1alpha2_VirtualMachineSetResourcePolicy_To_v1alpha1_VirtualMachineSetResourcePolicy(src, dst, nil)
-}
-
-func (src *VirtualMachineSetResourcePolicyList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineSetResourcePolicyList)
-	return Convert_v1alpha1_VirtualMachineSetResourcePolicyList_To_v1alpha2_VirtualMachineSetResourcePolicyList(src, dst, nil)
-}
-
-func (dst *VirtualMachineSetResourcePolicyList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineSetResourcePolicyList)
-	return Convert_v1alpha2_VirtualMachineSetResourcePolicyList_To_v1alpha1_VirtualMachineSetResourcePolicyList(src, dst, nil)
 }

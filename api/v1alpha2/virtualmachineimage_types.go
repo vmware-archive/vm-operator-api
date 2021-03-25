@@ -1,12 +1,10 @@
 // Copyright (c) 2018-2021 VMware, Inc. All Rights Reserved.
 // SPDX-License-Identifier: Apache-2.0
 
-package v1alpha1
+package v1alpha2
 
 import (
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"sigs.k8s.io/controller-runtime/pkg/conversion"
 )
 
 // VirtualMachineImageProductInfo describes optional product-related information that can be added to an image
@@ -116,6 +114,7 @@ func (vmImage *VirtualMachineImage) SetConditions(conditions Conditions) {
 
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:scope=Cluster,shortName=vmimage
+// +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
 // +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
@@ -146,24 +145,4 @@ type VirtualMachineImageList struct {
 
 func init() {
 	RegisterTypeWithScheme(&VirtualMachineImage{}, &VirtualMachineImageList{})
-}
-
-func (src *VirtualMachineImage) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineImage)
-	return Convert_v1alpha1_VirtualMachineImage_To_v1alpha2_VirtualMachineImage(src, dst, nil)
-}
-
-func (dst *VirtualMachineImage) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineImage)
-	return Convert_v1alpha2_VirtualMachineImage_To_v1alpha1_VirtualMachineImage(src, dst, nil)
-}
-
-func (src *VirtualMachineImageList) ConvertTo(dstRaw conversion.Hub) error {
-	dst := dstRaw.(*v1alpha2.VirtualMachineImageList)
-	return Convert_v1alpha1_VirtualMachineImageList_To_v1alpha2_VirtualMachineImageList(src, dst, nil)
-}
-
-func (dst *VirtualMachineImageList) ConvertFrom(srcRaw conversion.Hub) error {
-	src := srcRaw.(*v1alpha2.VirtualMachineImageList)
-	return Convert_v1alpha2_VirtualMachineImageList_To_v1alpha1_VirtualMachineImageList(src, dst, nil)
 }

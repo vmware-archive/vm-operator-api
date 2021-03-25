@@ -7,7 +7,7 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha1"
+	"github.com/vmware-tanzu/vm-operator-api/api/v1alpha2"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
@@ -49,7 +49,7 @@ func main() {
 	}
 
 	fmt.Printf("Listing VMs:\n")
-	vmList := v1alpha1.VirtualMachineList{}
+	vmList := v1alpha2.VirtualMachineList{}
 	err = vmOpClient.List(context.TODO(), &vmList)
 	if err != nil {
 		panic(err)
@@ -62,7 +62,7 @@ func main() {
 // Get a vm-operator-api client from the generated clientset
 func getVmopClient(config *rest.Config) (ctrlClient.Client, error) {
 	scheme := runtime.NewScheme()
-	_ = v1alpha1.AddToScheme(scheme)
+	_ = v1alpha2.AddToScheme(scheme)
 	client, err := ctrlClient.New(config, ctrlClient.Options{
 		Scheme: scheme,
 	})
@@ -80,7 +80,7 @@ func startTestEnv() (*rest.Config, error) {
 }
 
 func populateTestEnv(client ctrlClient.Client, name string) error {
-	newVM := v1alpha1.VirtualMachine{
+	newVM := v1alpha2.VirtualMachine{
 		ObjectMeta: metav1.ObjectMeta{
 			Name:      name,
 			Namespace: namespace,
