@@ -18,9 +18,6 @@ HOST_ARCH=$(shell go env GOARCH)
 # Binaries.
 CONTROLLER_GEN  := $(BIN_DIR)/controller-gen
 GOLANGCI_LINT   := $(BIN_DIR)/golangci-lint
-CLIENT_GEN      := $(BIN_DIR)/client-gen
-INFORMER_GEN    := $(BIN_DIR)/informer-gen
-LISTER_GEN      := $(BIN_DIR)/lister-gen
 
 ## --------------------------------------
 ##@ Help
@@ -37,21 +34,6 @@ help: ## Display this help
 controller-gen: $(CONTROLLER_GEN) ## Install controller-gen
 $(CONTROLLER_GEN): go.mod
 	go build -tags=tools -o $@ sigs.k8s.io/controller-tools/cmd/controller-gen
-
-.PHONY: $(CLIENT_GEN)
-client-gen: $(CLIENT_GEN) ## Install client-gen
-$(CLIENT_GEN): go.mod
-	go build -tags=tools -o $@ k8s.io/code-generator/cmd/client-gen
-
-.PHONY: $(INFORMER_GEN)
-informer-gen: $(INFORMER_GEN) ## Install informer-gen
-$(INFORMER_GEN): go.mod
-	go build -tags=tools -o $@ k8s.io/code-generator/cmd/informer-gen
-
-.PHONY: $(LISTER_GEN)
-lister-gen: $(LISTER_GEN) ## Install lister-gen
-$(LISTER_GEN): go.mod
-	go build -tags=tools -o $@ k8s.io/code-generator/cmd/lister-gen
 
 .PHONY: $(GOLANGCI_LINT)
 golangci-lint: $(GOLANGCI_LINT) ## Install golangci-lint

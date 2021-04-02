@@ -17,12 +17,7 @@ export PATH := $(abspath $(BIN_DIR)):$(abspath $(TOOLS_BIN_DIR)):$(PATH)
 
 # Tooling binaries
 CONTROLLER_GEN     := $(TOOLS_BIN_DIR)/controller-gen
-CLIENT_GEN         := $(TOOLS_BIN_DIR)/client-gen
-INFORMER_GEN       := $(TOOLS_BIN_DIR)/informer-gen
-LISTER_GEN         := $(TOOLS_BIN_DIR)/lister-gen
 GOLANGCI_LINT      := $(TOOLS_BIN_DIR)/golangci-lint
-
-CLIENT_GEN_SCRIPT  := hack/client-gen.sh
 
 # Allow overriding manifest generation destination directory
 MANIFEST_ROOT ?= config
@@ -42,7 +37,7 @@ help: ## Display this help
 ##@ Tooling
 ## --------------------------------------
 
-TOOLING_BINARIES := $(CONTROLLER_GEN) $(CLIENT_GEN) $(INFORMER_GEN) $(LISTER_GEN) $(GOLANGCI_LINT)
+TOOLING_BINARIES := $(CONTROLLER_GEN) $(GOLANGCI_LINT)
 tools: $(TOOLING_BINARIES) ## Build tooling binaries
 .PHONY: $(TOOLING_BINARIES)
 $(TOOLING_BINARIES):
@@ -64,7 +59,6 @@ modules-download: ## Downloads and caches the modules
 generate: ## Run all code generation targets
 	$(MAKE) generate-go
 	$(MAKE) generate-manifests
-	$(MAKE) generate-client
 
 .PHONY: generate-go
 generate-go: $(CONTROLLER_GEN) ## Runs Go related generate targets
@@ -85,10 +79,6 @@ generate-manifests: $(CONTROLLER_GEN) ## Generate manifests e.g. CRD, RBAC etc.
 		output:crd:dir=$(CRD_ROOT) \
 		output:none
 
-.PHONY: generate-client
-generate-client: tools ## Generate api client
-	$(CLIENT_GEN_SCRIPT)
-
 ## --------------------------------------
 ##@ Linting
 ## --------------------------------------
@@ -97,7 +87,7 @@ generate-client: tools ## Generate api client
 lint: ## Run all the lint targets
 	$(MAKE) lint-go-full
 	$(MAKE) lint-markdown
-	$(MAKE) lint-shell
+#	$(MAKE) lint-shell
 
 GOLANGCI_LINT_FLAGS ?= --fast=true
 .PHONY: lint-go
@@ -123,7 +113,6 @@ lint-shell: ## Lint the project's shell scripts
 .PHONY: clean
 clean: # Clean all generated or compiled files
 	$(MAKE) clean-bin 
-	$(MAKE) clean-client
 	$(MAKE) clean-crd
 	$(MAKE) modules
 
@@ -132,10 +121,6 @@ clean-bin: ## Remove all generated tooling binaries
 	rm -rf hack/tools/bin
 	rm -rf hack/samples/bin
 
-.PHONY: clean-client
-clean-client: ## Remove all generated client libraries
-	rm -rf pkg/client
-
 .PHONY: clean-crd
-clean-crd: ## Remove all generated client libraries
+clean-crd: ## Remove all generated crds
 	rm -rf config/crd
