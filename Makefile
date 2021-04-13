@@ -26,7 +26,7 @@ MANIFEST_ROOT ?= config
 CRD_ROOT      ?= $(MANIFEST_ROOT)/crd/bases
 
 # Set --output-base for conversion-gen if we are not within GOPATH
-ifneq ($(abspath $(ROOT_DIR)),$(shell go env GOPATH)/src/sigs.k8s.io/cluster-api)
+ifneq ($(abspath $(ROOT_DIR)),$(shell go env GOPATH)/src/github.com/vmware-tanzu/vm-operator-api)
 	CONVERSION_GEN_OUTPUT_BASE := --output-base=$(ROOT_DIR)
 endif
 
