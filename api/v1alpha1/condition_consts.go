@@ -38,6 +38,14 @@ const (
 )
 
 const (
+	// DeployedCondition exposes the deployment status of a VirtualMachine on the infrastructure provider.
+	DeployedCondition ConditionType = "Deployed"
+
+	// DeployFailedReason (Severity=Error) documents that the deployment of the VirtualMachine was not successful.
+	DeployFailedReason = "DeployFailed"
+)
+
+const (
 	// GuestCustomizationCondition exposes the status of guest customization from within the guest OS, when available.
 	GuestCustomizationCondition ConditionType = "GuestCustomization"
 
