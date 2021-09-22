@@ -90,6 +90,10 @@ type VirtualMachineClassSpec struct {
 	// policy.  The configuration specified in this field is used to customize various policies related to
 	// infrastructure resource consumption.
 	Policies VirtualMachineClassPolicies `json:"policies,omitempty"`
+
+	// Description describes the configuration of the VirtualMachineClass which is not related to virtual hardware
+	// or infrastructure policy. This field is used to address remaining specs about this VirtualMachineClass.
+	Description VirtualMachineClassDescription `json:"description,omitempty"`
 }
 
 // VirtualMachineClassStatus defines the observed state of VirtualMachineClass.  VirtualMachineClasses are immutable,
@@ -122,7 +126,6 @@ type VirtualMachineClass struct {
 
 	Spec   VirtualMachineClassSpec   `json:"spec,omitempty"`
 	Status VirtualMachineClassStatus `json:"status,omitempty"`
-	Description VirtualMachineClassDescription `json:"description,omitempty"`
 }
 
 // +kubebuilder:object:root=true
