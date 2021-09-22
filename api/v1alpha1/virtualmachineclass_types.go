@@ -97,6 +97,10 @@ type VirtualMachineClassSpec struct {
 type VirtualMachineClassStatus struct {
 }
 
+// VirtualMachineClassDescription defines the description of VirtualMachineClass.
+type VirtualMachineClassDescription struct {
+}
+
 // +kubebuilder:object:root=true
 // +kubebuilder:resource:scope=Cluster,shortName=vmclass
 // +kubebuilder:storageversion
@@ -118,6 +122,7 @@ type VirtualMachineClass struct {
 
 	Spec   VirtualMachineClassSpec   `json:"spec,omitempty"`
 	Status VirtualMachineClassStatus `json:"status,omitempty"`
+	Description VirtualMachineClassDescription `json:"description,omitempty"`
 }
 
 // +kubebuilder:object:root=true
