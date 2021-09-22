@@ -93,16 +93,12 @@ type VirtualMachineClassSpec struct {
 
 	// Description describes the configuration of the VirtualMachineClass which is not related to virtual hardware
 	// or infrastructure policy. This field is used to address remaining specs about this VirtualMachineClass.
-	Description VirtualMachineClassDescription `json:"description,omitempty"`
+	Description string `json:"description,omitempty"`
 }
 
 // VirtualMachineClassStatus defines the observed state of VirtualMachineClass.  VirtualMachineClasses are immutable,
 // non-dynamic resources, so this status is currently unused.
 type VirtualMachineClassStatus struct {
-}
-
-// VirtualMachineClassDescription defines the description of VirtualMachineClass.
-type VirtualMachineClassDescription struct {
 }
 
 // +kubebuilder:object:root=true
