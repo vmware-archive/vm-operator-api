@@ -392,6 +392,33 @@ type NetworkInterfaceStatus struct {
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 }
 
+// NetworkInterfaceStatusEx defines the properties of of network interfaces status extensions attached to the VirtualMachineTemplate
+// as seen by OVF properties
+type NetworkInterfaceStatusEx struct {
+	// MAC address of the network adapter
+	MacAddress string `json:"macAddress,omitempty"`
+
+	// IpAddresses represents zero, one or more IP addresses assigned to the network interface in CIDR notation.
+	// For eg, "192.0.2.1/16".
+	IpAddresses []string `json:"ipAddresses,omitempty"`
+
+	// Gateway setting
+	Gateway string `json:"gateway,omitempty"`
+
+	// SubnetMask setting
+	SubnetMask string `json:"subnetMask,omitempty"`
+}
+
+//NetworkStatus defines the properties of network status for VirtualMachineTemplate
+type NetworkStatus struct {
+	// NetworkInterfaces describe a list of current status information for each network interface that is desired to
+	// be attached to the VirtualMachineTemplate.
+	NetworkInterfaces []NetworkInterfaceStatusEx `json:"interfaces"`
+
+	// Nameservers describe a list of global network config for VirtualMachineTemplate
+	Nameservers []string `json:"nameservers"`
+}
+
 // VirtualMachineStatus defines the observed state of a VirtualMachine instance.
 type VirtualMachineStatus struct {
 	// Host describes the hostname or IP address of the infrastructure host that the VirtualMachine is executing on.
@@ -482,6 +509,15 @@ type VirtualMachine struct {
 
 func (vm VirtualMachine) NamespacedName() string {
 	return vm.Namespace + "/" + vm.Name
+}
+
+// VirtualMachineTemplate defines the specification for configuring VirtualMachine Template
+type VirtualMachineTemplate struct {
+	// NetworkStatus defines the specification of Network
+	Net NetworkStatus `json:"network"`
+
+	// A VirtualMachine represents the desired specification and the observed status of a VirtualMachine instance.
+	VM VirtualMachine `json:"virtualMachine"`
 }
 
 // VirtualMachineList contains a list of VirtualMachine.
