@@ -392,7 +392,7 @@ type NetworkInterfaceStatus struct {
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 }
 
-// NetworkInterfaceStatusEx defines the properties of of network interfaces status extensions attached to the VirtualMachineTemplate
+// NetworkInterfaceStatusEx defines the properties of network interfaces status extensions attached to the VirtualMachineTemplate
 // as seen by OVF properties
 type NetworkInterfaceStatusEx struct {
 	// MAC address of the network adapter
@@ -409,7 +409,7 @@ type NetworkInterfaceStatusEx struct {
 	SubnetMask string `json:"subnetMask,omitempty"`
 }
 
-//NetworkStatus defines the properties of network status for VirtualMachineTemplate
+// NetworkStatus defines the properties of network status for VirtualMachineTemplate
 type NetworkStatus struct {
 	// NetworkInterfaces describe a list of current status information for each network interface that is desired to
 	// be attached to the VirtualMachineTemplate.
@@ -517,7 +517,7 @@ type VirtualMachineTemplate struct {
 	Net NetworkStatus `json:"network"`
 
 	// A VirtualMachine represents the desired specification and the observed status of a VirtualMachine instance.
-	VM VirtualMachine `json:"virtualMachine"`
+	VM  VirtualMachine `json:"virtualMachine"`
 }
 
 // VirtualMachineList contains a list of VirtualMachine.
