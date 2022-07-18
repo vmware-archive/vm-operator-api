@@ -294,6 +294,17 @@ type VirtualMachineSpec struct {
 	// instance.  See VirtualMachineClass for more description.
 	ClassName string `json:"className"`
 
+	// GuestOS describes information about the guest OS, such as its intended
+	// family and ID.
+	//
+	// This information may be used to control how guest customization is
+	// applied (ex. Linux vs Windows) as well as the specificity of how much
+	// knowledge VMware Tools has about the guest operating system when running
+	// the customization logic in the guest.
+	//
+	// +optional
+	GuestOS VirtualMachineGuestOSDescriptor `json:"guestOS,omitempty"`
+
 	// PowerState describes the desired power state of a VirtualMachine.  Valid power states are "poweredOff" and "poweredOn".
 	PowerState VirtualMachinePowerState `json:"powerState"`
 
