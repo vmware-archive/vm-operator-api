@@ -392,25 +392,33 @@ type NetworkInterfaceStatus struct {
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 }
 
-// NetworkInterfaceStatusEx defines the properties of network interfaces status extensions attached to the VirtualMachineTemplate
+// NetworkInterfaceIP defines the network interface IP configuration including gateway, subnetmask and IP address
+// as seen by OVF properties
+type NetworkInterfaceIP struct {
+	// Gateway setting
+	Gateway    string `json:"gateway,omitempty"`
+
+	// SubnetMask setting
+	SubnetMask string `json:"subnetMask,omitempty"`
+
+	// IpAddress represents zero or one IP address assigned to the network interface in CIDR notation.
+	// eg, "192.0.2.1/16".
+	IpAddress         string `json:"ip,omitempty"`
+	
+}
+
+// NetworkInterfaceStatusEx defines the properties of network interface extended status attached to the VirtualMachineTemplate
 // as seen by OVF properties
 type NetworkInterfaceStatusEx struct {
 	// MAC address of the network adapter
 	MacAddress string `json:"macAddress,omitempty"`
 
-	// IpAddresses represents zero, one or more IP addresses assigned to the network interface in CIDR notation.
-	// For eg, "192.0.2.1/16".
-	IpAddresses []string `json:"ipAddresses,omitempty"`
-
-	// Gateway setting
-	Gateway string `json:"gateway,omitempty"`
-
-	// SubnetMask setting
-	SubnetMask string `json:"subnetMask,omitempty"`
+	// NetIP represents zero, one or more NetworkInterfaceIP configurations assigned to the network
+	NetIP []NetworkInterfaceIP  `json:"networkinterfaceIP,omitempty"`
 }
 
-// NetworkStatus defines the properties of network status for VirtualMachineTemplate
-type NetworkStatus struct {
+// NetworkSpec defines the properties of network status for VirtualMachineTemplate
+type NetworkSpec struct {
 	// NetworkInterfaces describe a list of current status information for each network interface that is desired to
 	// be attached to the VirtualMachineTemplate.
 	NetworkInterfaces []NetworkInterfaceStatusEx `json:"interfaces"`
@@ -511,12 +519,14 @@ func (vm VirtualMachine) NamespacedName() string {
 	return vm.Namespace + "/" + vm.Name
 }
 
-// VirtualMachineTemplate defines the specification for configuring VirtualMachine Template
+// VirtualMachineTemplate defines the specification for configuring VirtualMachine Template.
+// VirtualMachineTemplate is used during VM customization to populate VM OVF properties.
+// VirtualMachineTemplate is utilized for using Golang-based templating to provide access to dynamic configuration data.
 type VirtualMachineTemplate struct {
-	// NetworkStatus defines the specification of Network
-	Net NetworkStatus `json:"network"`
+	// NetworkSpec defines the specification of Network
+	Net NetworkSpec `json:"network"`
 
-	// A VirtualMachine represents the desired specification and the observed status of a VirtualMachine instance.
+	// A VirtualMachine represents the desired specification and the observed status of a VirtualMachine instance
 	VM  VirtualMachine `json:"virtualMachine"`
 }
 
