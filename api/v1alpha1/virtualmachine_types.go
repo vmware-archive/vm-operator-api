@@ -392,9 +392,12 @@ type NetworkInterfaceStatus struct {
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 }
 
-// NetworkInterfaceIP defines the network interface IP configuration including gateway, subnetmask and IP address
+// NetworkInterfaceStatusEx defines the properties of network interface extended status attached to the VirtualMachineTemplate
 // as seen by OVF properties
-type NetworkInterfaceIP struct {
+type NetworkInterfaceStatusEx struct {
+	// MAC address of the network adapter
+	MacAddress string `json:"macAddress,omitempty"`
+
 	// Gateway setting
 	Gateway    string `json:"gateway,omitempty"`
 
@@ -404,17 +407,6 @@ type NetworkInterfaceIP struct {
 	// IpAddress represents zero or one IP address assigned to the network interface in CIDR notation.
 	// eg, "192.0.2.1/16".
 	IpAddress         string `json:"ip,omitempty"`
-	
-}
-
-// NetworkInterfaceStatusEx defines the properties of network interface extended status attached to the VirtualMachineTemplate
-// as seen by OVF properties
-type NetworkInterfaceStatusEx struct {
-	// MAC address of the network adapter
-	MacAddress string `json:"macAddress,omitempty"`
-
-	// NetIP represents zero, one or more NetworkInterfaceIP configurations assigned to the network
-	NetIP []NetworkInterfaceIP  `json:"networkinterfaceIP,omitempty"`
 }
 
 // NetworkSpec defines the properties of network status for VirtualMachineTemplate
