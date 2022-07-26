@@ -515,11 +515,11 @@ func (vm VirtualMachine) NamespacedName() string {
 // VirtualMachineTemplate is used during VM customization to populate VM OVF properties.
 // VirtualMachineTemplate is utilized for using Golang-based templating to provide access to dynamic configuration data.
 type VirtualMachineTemplate struct {
-	// NetworkSpec defines the specification of Network
+	// Net defines the specification of Network
 	Net NetworkSpec `json:"network"`
 
-	// A VirtualMachine represents the desired specification and the observed status of a VirtualMachine instance
-	VM  VirtualMachine `json:"virtualMachine"`
+	// VM represents a pointer to a VirtualMachine instance that consist of the desired specification and the observed status
+	VM  *VirtualMachine `json:"virtualMachine"`
 }
 
 // VirtualMachineList contains a list of VirtualMachine.
