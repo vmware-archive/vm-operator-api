@@ -410,11 +410,11 @@ type NetworkInterfaceStatusEx struct {
 	// IpAddress represents zero or one IP address assigned to the network interface in CIDR notation.
 	// eg, "192.0.2.1/16".
 	// +optional
-	IpAddress string `json:"ip,omitempty"`
+	IPAddress string `json:"ip,omitempty"`
 }
 
-// NetworkSpec defines the properties of network status for VirtualMachineTemplate
-type NetworkSpec struct {
+// NetSpec defines the properties of network status for VirtualMachineTemplate
+type NetSpec struct {
 	// NetworkInterfaces describe a list of current status information for each network interface that is desired to
 	// be attached to the VirtualMachineTemplate.
 	NetworkInterfaces []NetworkInterfaceStatusEx `json:"interfaces"`
@@ -521,7 +521,7 @@ func (vm VirtualMachine) NamespacedName() string {
 // Golang-based templating, Virtual Machine Template provides access to dynamic configuration data.
 type VirtualMachineTemplate struct {
 	// Net defines the specification of Network
-	Net NetworkSpec `json:"network"`
+	Net NetSpec `json:"network"`
 
 	// VM represents a pointer to a VirtualMachine instance that consist of the desired specification and the observed status
 	VM *VirtualMachine `json:"virtualMachine"`
