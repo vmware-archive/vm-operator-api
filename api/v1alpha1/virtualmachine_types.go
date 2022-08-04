@@ -395,10 +395,6 @@ type NetworkInterfaceStatus struct {
 // NetworkInterfaceStatusEx defines the properties of network interface extended status attached to the VirtualMachineTemplate
 // as seen by OVF properties
 type NetworkInterfaceStatusEx struct {
-	// Mac address of the network adapter
-	// +optional
-	MacAddress string `json:"macAddress,omitempty"`
-
 	// Gateway setting
 	// +optional
 	Gateway string `json:"gateway,omitempty"`
