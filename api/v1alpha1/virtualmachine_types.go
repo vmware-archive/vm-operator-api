@@ -392,41 +392,6 @@ type NetworkInterfaceStatus struct {
 	IpAddresses []string `json:"ipAddresses,omitempty"`
 }
 
-// NetworkInterfaceIP defines the network interface IP configuration including gateway, subnetmask and IP address
-// as seen by OVF properties
-type NetworkInterfaceIP struct {
-	// Gateway setting
-	// +optional
-	Gateway string `json:"gateway,omitempty"`
-
-	// SubnetMask setting
-	// +optional
-	SubnetMask string `json:"subnetMask,omitempty"`
-
-	// IpAddress represents zero or one IP address assigned to the network interface in CIDR notation.
-	// eg, "192.0.2.1/16".
-	// +optional
-	IPAddress string `json:"ip,omitempty"`
-}
-
-// NetworkInterfaceStatusEx defines the properties of network interface extended status attached to the VirtualMachineTemplate
-// as seen by OVF properties
-type NetworkInterfaceStatusEx struct {
-	// NetIP represents zero, one or more NetworkInterfaceIP configurations assigned to the network
-	NetIP []NetworkInterfaceIP `json:"networkinterfaceIP,omitempty"`
-}
-
-// NetSpec defines the properties of network status for VirtualMachineTemplate
-type NetSpec struct {
-	// NetworkInterfaces describe a list of current status information for each network interface that is desired to
-	// be attached to the VirtualMachineTemplate.
-	NetworkInterfaces []NetworkInterfaceStatusEx `json:"interfaces"`
-
-	// Nameservers describe a list of DNS servers for VirtualMachineTemplate
-	// +optional
-	Nameservers []string `json:"nameservers,omitempty"`
-}
-
 // VirtualMachineStatus defines the observed state of a VirtualMachine instance.
 type VirtualMachineStatus struct {
 	// Host describes the hostname or IP address of the infrastructure host that the VirtualMachine is executing on.
@@ -517,17 +482,6 @@ type VirtualMachine struct {
 
 func (vm VirtualMachine) NamespacedName() string {
 	return vm.Namespace + "/" + vm.Name
-}
-
-// VirtualMachineTemplate defines the specification for configuring VirtualMachine Template.
-// A Virtual Machine Template is created during VM customization to populate OVF properties. Then by utilizing
-// Golang-based templating, Virtual Machine Template provides access to dynamic configuration data.
-type VirtualMachineTemplate struct {
-	// Net represents a pointer to the specification of Network
-	Net *NetSpec `json:"network"`
-
-	// VM represents a pointer to a VirtualMachine instance that consist of the desired specification and the observed status
-	VM *VirtualMachine `json:"virtualMachine"`
 }
 
 // VirtualMachineList contains a list of VirtualMachine.
