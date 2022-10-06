@@ -73,9 +73,7 @@ endif
 generate-manifests: $(CONTROLLER_GEN) ## Generate manifests e.g. CRD, RBAC etc.
 	$(CONTROLLER_GEN) \
 		paths=./api/... \
-		crd:trivialVersions=true \
 		crd:crdVersions=v1 \
-		crd:preserveUnknownFields=false \
 		output:crd:dir=$(CRD_ROOT) \
 		output:none
 
