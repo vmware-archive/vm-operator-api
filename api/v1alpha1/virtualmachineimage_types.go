@@ -4,6 +4,7 @@
 package v1alpha1
 
 import (
+	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
@@ -69,7 +70,7 @@ type VirtualMachineImageSpec struct {
 	ImageID string `json:"imageID"`
 
 	// ProviderRef is a reference to a content provider object that describes a provider.
-	ProviderRef ContentProviderReference `json:"providerRef"`
+	ProviderRef corev1.TypedLocalObjectReference `json:"providerRef"`
 
 	// ProductInfo describes the attributes of the VirtualMachineImage relating to the product contained in the
 	// image.
@@ -115,6 +116,10 @@ type VirtualMachineImageStatus struct {
 	// is supported or image is supported by VMService
 	// +optional
 	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
+
+	// ContentLibraryRef is a reference to the ContentLibrary object
+	// +optional
+	ContentLibraryRef corev1.TypedLocalObjectReference `json:"contentLibraryRef,omitempty"`
 }
 
 func (vmImage *VirtualMachineImage) GetConditions() Conditions {
