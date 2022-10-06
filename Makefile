@@ -85,6 +85,7 @@ generate-manifests: $(CONTROLLER_GEN) ## Generate manifests e.g. CRD, RBAC etc.
 lint: ## Run all the lint targets
 	$(MAKE) lint-go-full
 	$(MAKE) lint-markdown
+	$(MAKE) lint-spell
 #	$(MAKE) lint-shell
 
 GOLANGCI_LINT_FLAGS ?= --fast=true
@@ -103,6 +104,16 @@ lint-markdown: ## Lint the project's markdown
 .PHONY: lint-shell
 lint-shell: ## Lint the project's shell scripts
 	docker run --rm -v "$$(pwd)":/mnt:ro koalaman/shellcheck:stable $$(ls hack/*.sh)
+
+.PHONY: lint-spell
+CSPELL_ARGS := lint './**/*'
+lint-spell: ## Lint the project's spelling
+ifneq (,$(shell command -v cspell))
+	cspell $(CSPELL_ARGS)
+else
+	docker run --rm -v "$$(pwd)":/workdir:ro ghcr.io/streetsidesoftware/cspell:6.12.0 $(CSPELL_ARGS)
+endif
+
 
 ## --------------------------------------
 ##@ Cleanup
