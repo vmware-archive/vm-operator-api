@@ -118,7 +118,7 @@ type VirtualMachineImageStatus struct {
 	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
 
 	// ContentLibraryRef is a reference to the source ContentLibrary/ClusterContentLibrary resource.
-	ContentLibraryRef corev1.TypedLocalObjectReference `json:"contentLibraryRef,omitempty"`
+	ContentLibraryRef corev1.TypedLocalObjectReference `json:"contentLibraryRef"`
 }
 
 func (vmImage *VirtualMachineImage) GetConditions() Conditions {
@@ -133,7 +133,7 @@ func (vmImage *VirtualMachineImage) SetConditions(conditions Conditions) {
 // +kubebuilder:resource:scope=Cluster,shortName=vmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="ContentSourceName",type="string",JSONPath=".spec.providerRef.name"
+// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.ContentLibraryRef.name"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
 // +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
 // +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
