@@ -69,7 +69,7 @@ type VirtualMachineImageSpec struct {
 	// ImageID is a unique identifier exposed by the provider of this VirtualMachineImage.
 	ImageID string `json:"imageID"`
 
-	// ProviderRef is a reference to a content provider object that describes a provider.
+	// ProviderRef is a reference to the source ContentLibraryItem/ClusterContentLibraryItem resource.
 	ProviderRef corev1.TypedLocalObjectReference `json:"providerRef"`
 
 	// ProductInfo describes the attributes of the VirtualMachineImage relating to the product contained in the
@@ -117,8 +117,7 @@ type VirtualMachineImageStatus struct {
 	// +optional
 	Conditions []Condition `json:"conditions,omitempty" patchStrategy:"merge" patchMergeKey:"type"`
 
-	// ContentLibraryRef is a reference to the ContentLibrary object
-	// +optional
+	// ContentLibraryRef is a reference to the source ContentLibrary/ClusterContentLibrary resource.
 	ContentLibraryRef corev1.TypedLocalObjectReference `json:"contentLibraryRef,omitempty"`
 }
 

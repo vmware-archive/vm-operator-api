@@ -16,10 +16,10 @@ func (clusterVirtualMachineImage *ClusterVirtualMachineImage) SetConditions(cond
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:scope=Cluster,shortName=vmimage
+// +kubebuilder:resource:scope=Cluster,shortName=cvmimage;clustervmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="ContentSourceName",type="string",JSONPath=".spec.providerRef.name"
+// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.ContentLibraryRef.name"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
 // +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
 // +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
@@ -28,7 +28,7 @@ func (clusterVirtualMachineImage *ClusterVirtualMachineImage) SetConditions(cond
 
 // ClusterVirtualMachineImage is the schema for the clustervirtualmachineimage API
 // A ClusterVirtualMachineImage represents the desired specification and the observed status of a
-// ClusterVirtualMachineImage instance
+// ClusterVirtualMachineImage instance.
 type ClusterVirtualMachineImage struct {
 	metav1.TypeMeta   `json:",inline"`
 	metav1.ObjectMeta `json:"metadata,omitempty"`
@@ -39,7 +39,7 @@ type ClusterVirtualMachineImage struct {
 
 // +kubebuilder:object:root=true
 
-// ClusterVirtualMachineImageList contains a list of ClusterVirtualMachineImage
+// ClusterVirtualMachineImageList contains a list of ClusterVirtualMachineImage.
 type ClusterVirtualMachineImageList struct {
 	metav1.TypeMeta `json:",inline"`
 	metav1.ListMeta `json:"metadata,omitempty"`
