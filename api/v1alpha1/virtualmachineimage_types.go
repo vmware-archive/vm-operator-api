@@ -133,7 +133,7 @@ func (vmImage *VirtualMachineImage) SetConditions(conditions Conditions) {
 // +kubebuilder:resource:scope=Cluster,shortName=vmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.ContentLibraryRef.name"
+// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.contentLibraryRef.name"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
 // +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
 // +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
