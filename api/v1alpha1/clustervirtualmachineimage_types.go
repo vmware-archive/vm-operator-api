@@ -16,7 +16,7 @@ func (clusterVirtualMachineImage *ClusterVirtualMachineImage) SetConditions(cond
 }
 
 // +kubebuilder:object:root=true
-// +kubebuilder:resource:scope=Cluster,shortName=cvmimage;clustervmimage
+// +kubebuilder:resource:scope=Cluster,shortName=cvmi;cvmimage;clustervmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
 // +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.contentLibraryRef.name"
