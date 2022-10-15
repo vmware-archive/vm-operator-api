@@ -82,6 +82,12 @@ type VirtualMachinePublishRequestSource struct {
 type VirtualMachinePublishRequestTargetItem struct {
 	// Name is the name of the published object.
 	//
+	// If the spec.target.location.apiVersion equals
+	// imageregistry.vmware.com/v1alpha1 and the spec.target.location.kind
+	// equals ContentLibrary, then this should be the name that will
+	// show up in vCenter Content Library, not the custom resource name
+	// in the namespace.
+	//
 	// If omitted then the controller will use spec.source.name + "-image".
 	//
 	// +optional
@@ -126,8 +132,7 @@ type VirtualMachinePublishRequestTargetLocation struct {
 // typically a ContentLibrary resource.
 type VirtualMachinePublishRequestTarget struct {
 	// Item contains information about the name of the object to which
-	// the VM is published, as well as whether or not to overwrite an
-	// existing object with the same name.
+	// the VM is published.
 	//
 	// Please note this value is optional and if omitted, the controller
 	// will use spec.source.name + "-image" as the name of the published
@@ -214,6 +219,16 @@ type VirtualMachinePublishRequestStatus struct {
 	//
 	// +optional
 	StartTime metav1.Time `json:"startTime,omitempty"`
+
+	// Attempts represents the number of times the request has been attempted.
+	//
+	// +optional
+	Attempts int64 `json:"attempts,omitempty"`
+
+	// LastAttemptTime represents the time when the latest request was sent.
+	//
+	// +optional
+	LastAttemptTime metav1.Time `json:"lastAttemptTime,omitempty"`
 
 	// ImageName is the name of the VirtualMachineImage resource that is
 	// eventually realized in the same namespace as the VM and publication

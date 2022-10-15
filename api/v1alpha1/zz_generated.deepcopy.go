@@ -1377,6 +1377,7 @@ func (in *VirtualMachinePublishRequestStatus) DeepCopyInto(out *VirtualMachinePu
 	*out = *in
 	in.CompletionTime.DeepCopyInto(&out.CompletionTime)
 	in.StartTime.DeepCopyInto(&out.StartTime)
+	in.LastAttemptTime.DeepCopyInto(&out.LastAttemptTime)
 	if in.Conditions != nil {
 		in, out := &in.Conditions, &out.Conditions
 		*out = make([]Condition, len(*in))
