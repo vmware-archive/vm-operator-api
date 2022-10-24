@@ -139,13 +139,13 @@ type VirtualMachinePublishRequestTarget struct {
 	// item.
 	//
 	// +optional
-	Item VirtualMachinePublishRequestTargetItem `json:"item,omitempty"`
+	Item *VirtualMachinePublishRequestTargetItem `json:"item,omitempty"`
 
 	// Location contains information about the location to which to publish
 	// the VM.
 	//
 	// +optional
-	Location VirtualMachinePublishRequestTargetLocation `json:"location,omitempty"`
+	Location *VirtualMachinePublishRequestTargetLocation `json:"location,omitempty"`
 }
 
 // VirtualMachinePublishRequestSpec defines the desired state of a
@@ -166,7 +166,7 @@ type VirtualMachinePublishRequestSpec struct {
 	// a resource exists, then it is the source of the publication.
 	//
 	// +optional
-	Source VirtualMachinePublishRequestSource `json:"source,omitempty"`
+	Source *VirtualMachinePublishRequestSource `json:"source,omitempty"`
 
 	// Target is the target of the publication request, ex. item
 	// information and a ContentLibrary resource.
@@ -184,7 +184,7 @@ type VirtualMachinePublishRequestSpec struct {
 	// will be marked in error.
 	//
 	// +optional
-	Target VirtualMachinePublishRequestTarget `json:"target,omitempty"`
+	Target *VirtualMachinePublishRequestTarget `json:"target,omitempty"`
 
 	// TTLSecondsAfterFinished is the time-to-live duration for how long this
 	// resource will be allowed to exist once the publication operation
@@ -355,7 +355,7 @@ func (vmpr *VirtualMachinePublishRequest) markCondition(
 	}
 	if reason == "" && status == corev1.ConditionTrue {
 		reason = VirtualMachinePublishRequestConditionSuccess
-	} else {
+	} else if reason == "" {
 		reason = string(status)
 	}
 

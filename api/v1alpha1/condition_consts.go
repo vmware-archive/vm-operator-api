@@ -106,3 +106,33 @@ const (
 	// is not prepared for VMService consumption.
 	VirtualMachineImageV1Alpha1NotCompatibleReason = "VirtualMachineImageV1Alpha1NotCompatible"
 )
+
+// Condition.Reason for Conditions related to VirtualMachinePublishRequest.
+const (
+	// VirtualMachinePublishRequestSourceVMNotFoundReason (Severity=Error) documents that the source VM is not found.
+	VirtualMachinePublishRequestSourceVMNotFoundReason = "SourceVMNotFound"
+
+	// VirtualMachinePublishRequestSourceVMNotCreatedReason (Severity=Error) documents that the source VM
+	// hasn't been fully created yet.
+	VirtualMachinePublishRequestSourceVMNotCreatedReason = "SourceVMNotCreated"
+
+	// VirtualMachinePublishRequestSourceVMUniqueIDNotReadyReason (Severity=Error) documents that the source VM
+	// has empty unique ID in its status.
+	VirtualMachinePublishRequestSourceVMUniqueIDNotReadyReason = "SourceVMUniqueIDNotReady"
+
+	// VirtualMachinePublishRequestTargetLocationNotFoundReason (Severity=Error) documents that the target location
+	// content library is not found.
+	VirtualMachinePublishRequestTargetLocationNotFoundReason = "TargetContentLibraryNotFound"
+
+	// VirtualMachinePublishRequestTargetItemAlreadyExistsReason (Severity=Error) documents that an item with the
+	// same target name already exists in the content library.
+	VirtualMachinePublishRequestTargetItemAlreadyExistsReason = "TargetItemAlreadyExists"
+
+	// VirtualMachinePublishRequestUploadingReason (Severity=Info) documents that the VM publish work is still in progress.
+	// The target item is uploading to the content library.
+	VirtualMachinePublishRequestUploadingReason = "Uploading"
+
+	// VirtualMachinePublishRequestUploadFailureReason (Severity=Error) documents that the VM publish work failed.
+	// The target item failed to be uploaded to the content library.
+	VirtualMachinePublishRequestUploadFailureReason = "UploadFailure"
+)
