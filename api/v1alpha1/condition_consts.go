@@ -93,6 +93,12 @@ const (
 	// VirtualMachineImageV1Alpha1CompatibleCondition denotes image compatibility with VMService. VMService expects
 	// VirtualMachineImage to be prepared by VMware specifically for VMService v1alpha1.
 	VirtualMachineImageV1Alpha1CompatibleCondition ConditionType = "VirtualMachineImageV1Alpha1Compatible"
+
+	// VirtualMachineImageSyncedCondition denotes that the image is synced with the vSphere content library.
+	VirtualMachineImageSyncedCondition ConditionType = "VirtualMachineImageSynced"
+
+	// VirtualMachineImageProviderReadyCondition denotes that the image provider from vSphere is ready.
+	VirtualMachineImageProviderReadyCondition ConditionType = "VirtualMachineImageProviderReady"
 )
 
 // Condition.Reason for Conditions related to VirtualMachineImages.
@@ -105,4 +111,12 @@ const (
 	// VirtualMachineImageV1Alpha1NotCompatibleReason (Severity=Error) documents that the VirtualMachine Image
 	// is not prepared for VMService consumption.
 	VirtualMachineImageV1Alpha1NotCompatibleReason = "VirtualMachineImageV1Alpha1NotCompatible"
+
+	// VirtualMachineImageProviderNotReadyReason (Severity=Error) documents that the VirtualMachine Image provider
+	// from the vSphere content library is not ready.
+	VirtualMachineImageProviderNotReadyReason = "VirtualMachineImageProviderNotReady"
+
+	// VirtualMachineImageNotSynced (Severity=Error) documents that the VirtualMachine Image is not synced with the
+	// latest version from the vSphere content library.
+	VirtualMachineImageNotSyncedReason = "VirtualMachineImageNotSynced"
 )

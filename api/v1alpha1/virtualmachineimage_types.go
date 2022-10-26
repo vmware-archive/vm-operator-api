@@ -134,12 +134,13 @@ func (vmImage *VirtualMachineImage) SetConditions(conditions Conditions) {
 // +kubebuilder:resource:scope=Cluster,shortName=vmi;vmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="ContentSourceName",type="string",JSONPath=".spec.providerRef.name"
-// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.contentLibraryRef.name"
+// +kubebuilder:printcolumn:name="Provider-Name",type="string",JSONPath=".spec.providerRef.name"
+// +kubebuilder:printcolumn:name="Content-Library-Name",type="string",JSONPath=".status.contentLibraryRef.name"
+// +kubebuilder:printcolumn:name="Image-Name",type="string",JSONPath=".status.imageName"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
-// +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
+// +kubebuilder:printcolumn:name="Os-Type",type="string",JSONPath=".spec.osInfo.type"
 // +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
-// +kubebuilder:printcolumn:name="ImageSupported",type="boolean",priority=1,JSONPath=".status.imageSupported"
+// +kubebuilder:printcolumn:name="Image-Supported",type="boolean",priority=1,JSONPath=".status.imageSupported"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 
 // VirtualMachineImage is the Schema for the virtualmachineimages API
@@ -175,12 +176,13 @@ func (clusterVirtualMachineImage *ClusterVirtualMachineImage) SetConditions(cond
 // +kubebuilder:resource:scope=Cluster,shortName=cvmi;cvmimage;clustervmimage
 // +kubebuilder:storageversion
 // +kubebuilder:subresource:status
-// +kubebuilder:printcolumn:name="ContentSourceName",type="string",JSONPath=".spec.providerRef.name"
-// +kubebuilder:printcolumn:name="ContentLibraryName",type="string",JSONPath=".status.contentLibraryRef.name"
+// +kubebuilder:printcolumn:name="Provider-Name",type="string",JSONPath=".spec.providerRef.name"
+// +kubebuilder:printcolumn:name="Content-Library-Name",type="string",JSONPath=".status.contentLibraryRef.name"
+// +kubebuilder:printcolumn:name="Image-Name",type="string",JSONPath=".status.imageName"
 // +kubebuilder:printcolumn:name="Version",type="string",JSONPath=".spec.productInfo.version"
-// +kubebuilder:printcolumn:name="OsType",type="string",JSONPath=".spec.osInfo.type"
+// +kubebuilder:printcolumn:name="Os-Type",type="string",JSONPath=".spec.osInfo.type"
 // +kubebuilder:printcolumn:name="Format",type="string",JSONPath=".spec.type"
-// +kubebuilder:printcolumn:name="ImageSupported",type="boolean",priority=1,JSONPath=".status.imageSupported"
+// +kubebuilder:printcolumn:name="Image-Supported",type="boolean",priority=1,JSONPath=".status.imageSupported"
 // +kubebuilder:printcolumn:name="Age",type="date",JSONPath=".metadata.creationTimestamp"
 
 // ClusterVirtualMachineImage is the schema for the clustervirtualmachineimage API
