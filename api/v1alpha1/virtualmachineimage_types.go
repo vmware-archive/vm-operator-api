@@ -120,6 +120,11 @@ type VirtualMachineImageStatus struct {
 	// ContentLibraryRef is a reference to the source ContentLibrary/ClusterContentLibrary resource.
 	// +optional
 	ContentLibraryRef *corev1.TypedLocalObjectReference `json:"contentLibraryRef,omitempty"`
+
+	// ContentVersion describes the observed content version of this VirtualMachineImage that was last successfully
+	// synced with the vSphere content library item.
+	// +optional
+	ContentVersion string `json:"contentVersion"`
 }
 
 func (vmImage *VirtualMachineImage) GetConditions() Conditions {
