@@ -82,6 +82,12 @@ type VirtualMachinePublishRequestSource struct {
 type VirtualMachinePublishRequestTargetItem struct {
 	// Name is the name of the published object.
 	//
+	// If the spec.target.location.apiVersion equals
+	// imageregistry.vmware.com/v1alpha1 and the spec.target.location.kind
+	// equals ContentLibrary, then this should be the name that will
+	// show up in vCenter Content Library, not the custom resource name
+	// in the namespace.
+	//
 	// If omitted then the controller will use spec.source.name + "-image".
 	//
 	// +optional
@@ -126,21 +132,20 @@ type VirtualMachinePublishRequestTargetLocation struct {
 // typically a ContentLibrary resource.
 type VirtualMachinePublishRequestTarget struct {
 	// Item contains information about the name of the object to which
-	// the VM is published, as well as whether or not to overwrite an
-	// existing object with the same name.
+	// the VM is published.
 	//
 	// Please note this value is optional and if omitted, the controller
 	// will use spec.source.name + "-image" as the name of the published
 	// item.
 	//
 	// +optional
-	Item VirtualMachinePublishRequestTargetItem `json:"item,omitempty"`
+	Item *VirtualMachinePublishRequestTargetItem `json:"item,omitempty"`
 
 	// Location contains information about the location to which to publish
 	// the VM.
 	//
 	// +optional
-	Location VirtualMachinePublishRequestTargetLocation `json:"location,omitempty"`
+	Location *VirtualMachinePublishRequestTargetLocation `json:"location,omitempty"`
 }
 
 // VirtualMachinePublishRequestSpec defines the desired state of a
@@ -161,7 +166,7 @@ type VirtualMachinePublishRequestSpec struct {
 	// a resource exists, then it is the source of the publication.
 	//
 	// +optional
-	Source VirtualMachinePublishRequestSource `json:"source,omitempty"`
+	Source *VirtualMachinePublishRequestSource `json:"source,omitempty"`
 
 	// Target is the target of the publication request, ex. item
 	// information and a ContentLibrary resource.
@@ -179,7 +184,7 @@ type VirtualMachinePublishRequestSpec struct {
 	// will be marked in error.
 	//
 	// +optional
-	Target VirtualMachinePublishRequestTarget `json:"target,omitempty"`
+	Target *VirtualMachinePublishRequestTarget `json:"target,omitempty"`
 
 	// TTLSecondsAfterFinished is the time-to-live duration for how long this
 	// resource will be allowed to exist once the publication operation
@@ -214,6 +219,16 @@ type VirtualMachinePublishRequestStatus struct {
 	//
 	// +optional
 	StartTime metav1.Time `json:"startTime,omitempty"`
+
+	// Attempts represents the number of times the request has been attempted.
+	//
+	// +optional
+	Attempts int64 `json:"attempts,omitempty"`
+
+	// LastAttemptTime represents the time when the latest request was sent.
+	//
+	// +optional
+	LastAttemptTime metav1.Time `json:"lastAttemptTime,omitempty"`
 
 	// ImageName is the name of the VirtualMachineImage resource that is
 	// eventually realized in the same namespace as the VM and publication
@@ -340,7 +355,7 @@ func (vmpr *VirtualMachinePublishRequest) markCondition(
 	}
 	if reason == "" && status == corev1.ConditionTrue {
 		reason = VirtualMachinePublishRequestConditionSuccess
-	} else {
+	} else if reason == "" {
 		reason = string(status)
 	}
 
