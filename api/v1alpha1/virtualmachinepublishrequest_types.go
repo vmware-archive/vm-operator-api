@@ -533,9 +533,31 @@ type VirtualMachinePublishRequestList struct {
 	Items           []VirtualMachinePublishRequest `json:"items"`
 }
 
+// +kubebuilder:object:root=true
+
+type DummyVirtualMachinePublishRequest struct {
+	metav1.TypeMeta   `json:",inline"`
+	metav1.ObjectMeta `json:"metadata,omitempty"`
+
+	Spec   VirtualMachinePublishRequestSpec   `json:"spec,omitempty"`
+	Status VirtualMachinePublishRequestStatus `json:"status,omitempty"`
+}
+
+// +kubebuilder:object:root=true
+
+// VirtualMachinePublishRequestList contains a list of
+// VirtualMachinePublishRequest resources.
+type DummyVirtualMachinePublishRequestList struct {
+	metav1.TypeMeta `json:",inline"`
+	metav1.ListMeta `json:"metadata,omitempty"`
+	Items           []DummyVirtualMachinePublishRequest `json:"items"`
+}
+
 func init() {
 	RegisterTypeWithScheme(
 		&VirtualMachinePublishRequest{},
 		&VirtualMachinePublishRequestList{},
+		&DummyVirtualMachinePublishRequest{},
+		&DummyVirtualMachinePublishRequestList{},
 	)
 }
